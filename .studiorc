@@ -1,0 +1,7 @@
+load() {
+  hab svc load $HAB_ORIGIN/teal-iron-kitten
+}
+
+unload() {
+  hab svc unload $HAB_ORIGIN/teal-iron-kitten
+}
