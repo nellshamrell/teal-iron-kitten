@@ -1,6 +1,6 @@
 # vi:syntax=sh
 
-HAB_TARGET=${HAB_TOOLCHAIN:-x86_64-linux}
+TARGET=${TARGET:-x86_64-linux}
 
 load() {
   hab svc load $HAB_ORIGIN/teal-iron-kitten
@@ -11,7 +11,11 @@ unload() {
 }
 
 build() {
-  hab pkg exec $HAB_ORIGIN/hab-plan-build "$@"
+  hab pkg exec $HAB_ORIGIN/hab-plan-build hab-plan-build "$@"
+}
+
+build_plan_build() {
+  hab pkg exec core/hab-plan-build hab-plan-build /src/plan-build
 }
 
 
@@ -31,4 +35,5 @@ build() {
 #   return 1
 # }
 
+build_plan_build
 
