@@ -2279,6 +2279,10 @@ else
   exit_with "Failed to load Plan" $ret
 fi
 
+if _array_contains "${pkg_target}" "${pkg_target_excludes[@]}"; then
+  exit_with "This plan does not support $pkg_target" 42
+fi
+
 if [[ -n "$HAB_ORIGIN" ]]; then
   pkg_origin="$HAB_ORIGIN"
 fi

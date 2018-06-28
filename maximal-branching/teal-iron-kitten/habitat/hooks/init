@@ -1,3 +1,0 @@
-#!/bin/bash
-
-cp -r {{pkg.path}}/app/* {{pkg.svc_data_path}}
