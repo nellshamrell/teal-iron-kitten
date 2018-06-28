@@ -1,7 +1,8 @@
 # shellcheck disable=2034
 pkg_name=hab-plan-build
 pkg_origin=core
-pkg_version=$(cat "$PLAN_CONTEXT/../../VERSION")
+#pkg_version=$(cat "$PLAN_CONTEXT/../../VERSION")
+pkg_version="0.58.0-dev"
 pkg_maintainer="The Habitat Maintainers <humans@habitat.sh>"
 pkg_license=('Apache-2.0')
 pkg_bin_dirs=(bin)

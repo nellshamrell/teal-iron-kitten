@@ -388,7 +388,7 @@ pkg_arch=$(uname -m | tr '[:upper:]' '[:lower:]')
 # The target system (i.e. operating system variant) this plan will be built for
 pkg_sys=$(uname -s | tr '[:upper:]' '[:lower:]')
 # The full target tuple this plan will be built for
-pkg_target="${pkg_arch}-${pkg_sys}"
+pkg_target="${TARGET:-${pkg_arch}-${pkg_sys}}"
 # The package's origin (i.e. acme)
 pkg_origin=""
 # Each release is a timestamp - `YYYYMMDDhhmmss`
@@ -2234,18 +2234,29 @@ if [[ -f "$PLAN_CONTEXT/plan.sh" && -f "$PLAN_CONTEXT/habitat/plan.sh" ]];then
   places="$PLAN_CONTEXT/plan.sh and $PLAN_CONTEXT/habitat/plan.sh"
   exit_with "A Plan file was found at $places. Only one is allowed at a time" 42
 fi
+
+# TODO: What is the right logic here? 
+
 # We check if the provided path has a `plan.sh` in it in either location. If
 # not, we'll quickly bail.
-if [[ ! -f "$PLAN_CONTEXT/plan.sh" ]]; then
-  if [[ -f "$PLAN_CONTEXT/habitat/plan.sh" ]]; then
-    # As the `plan.sh` is in a deeper subdirectory, we'll update the
-    # `$PLAN_CONTEXT` directory to be relative to the actual `plan.sh` file.
-    PLAN_CONTEXT="$PLAN_CONTEXT/habitat"
-  else
-    places="$PLAN_CONTEXT/plan.sh or $PLAN_CONTEXT/habitat/plan.sh"
-    exit_with "Plan file not found at $places" 42
-  fi
+if [[ -f "$PLAN_CONTEXT/$pkg_target/plan.sh" ]]; then 
+  PLAN_CONTEXT="$PLAN_CONTEXT/$pkg_target"
+elif [[ -f "$PLAN_CONTEXT/habitat/$pkg_target/plan.sh" ]]; then
+  PLAN_CONTEXT="$PLAN_CONTEXT/habitat/$pkg_target"
+elif [[ -f "$PLAN_CONTEXT/habitat/plan.sh" ]]; then
+  PLAN_CONTEXT="$PLAN_CONTEXT/habitat"
 fi
+
+# if [[ ! -f "$PLAN_CONTEXT/plan.sh" ]]; then
+  # if [[ -f "$PLAN_CONTEXT/habitat/plan.sh" ]]; then
+  #   # As the `plan.sh` is in a deeper subdirectory, we'll update the
+  #   # `$PLAN_CONTEXT` directory to be relative to the actual `plan.sh` file.
+  #   PLAN_CONTEXT="$PLAN_CONTEXT/habitat"
+  # else
+  #   places="$PLAN_CONTEXT/plan.sh or $PLAN_CONTEXT/habitat/plan.sh"
+  #   exit_with "Plan file not found at $places" 42
+  # fi
+# fi
 
 # Change into the `$PLAN_CONTEXT` directory for proper resolution of relative
 # paths in `plan.sh`
