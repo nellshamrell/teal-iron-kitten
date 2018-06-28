@@ -16,3 +16,10 @@ Any callback or variable with a relative path in it will have to be redefined, i
 
 Any variables with interpolation will have to be redefined.
 
+
+## hab plan build,  what's different
+
+Lines
+391, added pkg_target override while I experiment
+2282-2284, compare pkg_target with pkg_target_excludes() a potential mechanism for plan authors to tell builder that this won't build on XYZ
+2238-2259, add additional logic around plan detection. There is still some work here to handle edge cases but for experminations sake it's enough. 
