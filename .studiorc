@@ -1,3 +1,7 @@
+# vi:syntax=sh
+
+HAB_TARGET=${HAB_TOOLCHAIN:-x86_64-linux}
+
 load() {
   hab svc load $HAB_ORIGIN/teal-iron-kitten
 }
@@ -5,3 +9,26 @@ load() {
 unload() {
   hab svc unload $HAB_ORIGIN/teal-iron-kitten
 }
+
+build() {
+  hab pkg exec $HAB_ORIGIN/hab-plan-build "$@"
+}
+
+
+# is_target_supported() {
+#   pkg_supported_targets=(linux $(/src/scripts/print_supported_toolchains.sh $@))
+
+#   echo "TOOLCHAIN: ${HAB_TOOLCHAIN}"
+#   echo "pkg_supported_targets: ${pkg_supported_targets[*]}"
+
+#   for target in "${pkg_supported_targets[@]}"; do
+#     if [[ "${target}" == "${HAB_TARGET}" ]]; then 
+#       return 0
+#     fi
+#   done 
+
+
+#   return 1
+# }
+
+
